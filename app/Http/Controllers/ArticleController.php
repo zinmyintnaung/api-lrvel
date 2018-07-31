@@ -3,9 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Requests;
+use App\Article;
+use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends Controller
 {
+    protected $request;
+    protected $article;
+
+    public function __construct(Request $request, Article $article) {
+        $this->request = $request;
+        $this->article = $article;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +25,14 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        // Get articles
+        //$articles = Article::paginate(15);
+
+        // Return collection of articles as a resource
+        //return ArticleResource::collection($articles);
+        $article = $this->article->all();
+        return response()->json(['data' => $article,
+            'status' => Response::HTTP_OK]);
     }
 
     
