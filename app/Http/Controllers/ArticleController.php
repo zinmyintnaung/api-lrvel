@@ -45,7 +45,24 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->request->all();
+        $this->article->title = $data['title'];
+        $this->article->body = $data['body'];
+        $this->article->save();
+        
+        return response()->json(['status' => Response::HTTP_CREATED]);
+    }
+
+    public function update($id) {
+        $data = $this->request->all();
+        
+        $article = $this->article->find($id);
+        
+        $article->title = $data['title'];
+        $article->body = $data['body'];
+        $article->save();
+        
+        return response()->json(['status' => Response::HTTP_OK]);
     }
 
     /**
@@ -56,7 +73,9 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = $this->article->find($id);
+        return response()->json(['data' => $article,
+            'status' => Response::HTTP_OK]);
     }
 
     /**
@@ -67,6 +86,9 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = $this->article->find($id);
+        $article->delete();
+        
+        return response()->json(['status' => Response::HTTP_OK]);
     }
 }
